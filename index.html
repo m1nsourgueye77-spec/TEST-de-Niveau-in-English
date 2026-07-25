@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Test de positionnement – Anglais</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:Arial;background:#f4f6f9;font-size:18px}
+header{background:#0ea5a4;color:#fff;padding:20px}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:#fff;padding:20px;border-radius:10px}
+.q{margin-bottom:15px;background:#f9fafb;padding:10px;border-radius:6px}
+button{background:#0ea5a4;color:#fff;padding:12px 18px;border:0;border-radius:6px;cursor:pointer;margin-top:10px}
+textarea{width:100%;min-height:120px}
+#result{background:#e7f9f7;padding:15px;border-radius:8px;margin-top:15px}
+label{display:block;margin:6px 0}
+h2{margin-top:25px}
+</style>
+</head>
+
+<body>
+
+<button onclick="exportPDF()">Exporter en PDF</button>
+
+<header>
+  <h1>Test de positionnement – Anglais</h1>
+</header>
+
+<div class="container">
+<div class="card">
+
+<form id="testForm">
+
+<h2>Informations du candidat</h2>
+<div class="q"><input id="nom" placeholder="Nom et prénom" required></div>
+<div class="q"><input id="tel" placeholder="Téléphone" required></div>
+<div class="q"><input id="email" placeholder="Email"></div>
+
+<h2>Questions</h2>
+
+<div class="q">
+<label>1. She ___ here since 2018. (5 pts)</label>
+<label><input type="radio" name="q1" value="a"> has lived</label>
+<label><input type="radio" name="q1" value="b"> is living</label>
+<label><input type="radio" name="q1" value="c"> lives</label>
+</div>
+
+<div class="q">
+<label>2. If I ___ more time, I would travel. (5 pts)</label>
+<label><input type="radio" name="q2" value="a"> have</label>
+<label><input type="radio" name="q2" value="b"> had</label>
+<label><input type="radio" name="q2" value="c"> will have</label>
+</div>
+
+<div class="q">
+<label>3. They built the bridge in 2010. Passive voice. (5 pts)</label>
+<label><input type="radio" name="q3" value="a"> The bridge was built</label>
+<label><input type="radio" name="q3" value="b"> The bridge is built</label>
+<label><input type="radio" name="q3" value="c"> The bridge has built</label>
+</div>
+
+<div class="q">
+<label>4. "Give up" means: (5 pts)</label>
+<label><input type="radio" name="q4" value="a"> abandon</label>
+<label><input type="radio" name="q4" value="b"> continue</label>
+<label><input type="radio" name="q4" value="c"> start</label>
+</div>
+
+<div class="q">
+<label>5. Correct expression: (5 pts)</label>
+<label><input type="radio" name="q5" value="a"> make a decision</label>
+<label><input type="radio" name="q5" value="b"> do a decision</label>
+<label><input type="radio" name="q5" value="c"> take a decide</label>
+</div>
+
+<div class="q">
+<label>6. Why do you learn English? (5 pts)</label>
+<label><input type="radio" name="q6" value="a"> Exams</label>
+<label><input type="radio" name="q6" value="b"> Career & communication</label>
+<label><input type="radio" name="q6" value="c"> Travel</label>
+</div>
+
+<div class="q">
+<label>7. Mum takes ___ her baby. (5 pts)</label>
+<label><input type="radio" name="q7" value="a"> care</label>
+<label><input type="radio" name="q7" value="b"> out</label>
+<label><input type="radio" name="q7" value="c"> up</label>
+</div>
+
+<div class="q">
+<h2>Expression écrite (5 pts)</h2>
+<p>Write 5–6 lines: <strong>Why is learning English important for your future?</strong></p>
+<textarea id="q8"></textarea>
+</div>
+
+<button type="button" onclick="corriger()">Valider</button>
+<div id="result"></div>
+
+</form>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxyi8YtX8uzhTdkyLqVLDBvNXwkurnzOlJc4pc4yTEVbE1_M9QYELT6hTbruJwU8a5juQ/exec";
+
+const answers = {
+  q1:'a',
+  q2:'b',
+  q3:'a',
+  q4:'a',
+  q5:'a',
+  q6:'b',
+  q7:'a'
+};
+
+function corriger(){
+  let score = 0;
+  let data = {};
+
+  // Calcul du score
+  for(let q in answers){
+    let e = document.querySelector(`input[name="${q}"]:checked`);
+    if(e){
+      data[q] = e.value;
+      if(e.value === answers[q]) score += 5;
+    }
+  }
+
+  data.q8 = document.getElementById("q8").value;
+
+  let level =
+    score < 15 ? "Level 1" :
+    score < 25 ? "Level 2" :
+    score < 35 ? "Level 3" : "Post-bac";
+
+  document.getElementById("result").innerHTML =
+    `Score : <b>${score}</b><br>Niveau : <b>${level}</b>`;
+
+  // Envoi des données vers Google Sheets
+  fetch(SHEET_URL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      nom: document.getElementById("nom").value,
+      tel: document.getElementById("tel").value,
+      email: document.getElementById("email").value,
+      score: score,
+      level: level,
+      q1: data.q1 || "",
+      q2: data.q2 || "",
+      q3: data.q3 || "",
+      q4: data.q4 || "",
+      q5: data.q5 || "",
+      q6: data.q6 || "",
+      q7: data.q7 || "",
+      q8: data.q8 || ""
+    })
+  })
+  .then(res => res.text())
+  .then(txt => alert("Réponses enregistrées avec succès !"))
+  .catch(err => alert("Erreur lors de l'envoi : " + err));
+}
+
+// Export PDF
+async function exportPDF(){
+  const { jsPDF } = window.jspdf;
+  const zone = document.querySelector(".container");
+  const canvas = await html2canvas(zone,{scale:3});
+  const pdf = new jsPDF("p","mm","a4");
+  pdf.addImage(canvas.toDataURL("image/png"),"PNG",5,5,200,0);
+  pdf.save("test-anglais.pdf");
+}
+</script>
+
+</body>
+</html>
