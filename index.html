@@ -101,80 +101,182 @@ h2{margin-top:25px}
 </div>
 </div>
 
+<script>
+// ===============================
+// CONFIGURATION
+// ===============================
+
+// Remplace par l'URL de ton Apps Script
+const SHEET_URL = "https://script.google.com/macros/s/TON_SCRIPT_ID/exec";
+
+// Réponses correctes
+const answers = {
+    q1: "a",
+    q2: "b",
+    q3: "a",
+    q4: "a",
+    q5: "a",
+    q6: "b",
+    q7: "a"
+};
+
+// ===============================
+// CORRECTION
+// ===============================
+
+async function corriger() {
+
+    let score = 0;
+
+    Object.keys(answers).forEach(q => {
+        const rep = document.querySelector(`input[name="${q}"]:checked`);
+
+        if(rep && rep.value === answers[q]){
+            score += 5;
+        }
+    });
+
+    const redaction = document.getElementById("q8").value.trim();
+
+    if(redaction.length >= 120){
+        score += 5;
+    }
+
+    let niveau = "";
+    let recommandation = "";
+
+    if(score <= 15){
+
+        niveau = "Débutant (A1)";
+
+        recommandation =
+        "Vous devez commencer par les bases : alphabet, verbes be/have, présent simple, vocabulaire essentiel.";
+
+    }else if(score <= 25){
+
+        niveau = "Élémentaire (A2)";
+
+        recommandation =
+        "Vous connaissez les bases mais devez renforcer la grammaire et la compréhension orale.";
+
+    }else if(score <= 35){
+
+        niveau = "Intermédiaire (B1)";
+
+        recommandation =
+        "Vous pouvez communiquer dans les situations courantes. Travaillez les temps avancés et le vocabulaire.";
+
+    }else{
+
+        niveau = "Avancé (B2+)";
+
+        recommandation =
+        "Très bon niveau. Concentrez-vous sur la fluidité, les expressions idiomatiques et la rédaction.";
+
+    }
+
+    document.getElementById("result").innerHTML = `
+        <h2>Résultat</h2>
+
+        <p><b>Score :</b> ${score}/40</p>
+
+        <p><b>Niveau :</b> ${niveau}</p>
+
+        <p><b>Recommandation :</b><br>${recommandation}</p>
+    `;
+
+    // Enregistrer dans Google Sheets
+    enregistrer(score,niveau,recommandation);
+}
+
+// ===============================
+// ENVOI GOOGLE SHEETS
+// ===============================
+
+async function enregistrer(score,niveau,recommandation){
+
+    const data = {
+
+        nom:document.getElementById("nom").value,
+
+        telephone:document.getElementById("tel").value,
+
+        email:document.getElementById("email").value,
+
+        score:score,
+
+        niveau:niveau,
+
+        recommandation:recommandation,
+
+        redaction:document.getElementById("q8").value,
+
+        date:new Date().toLocaleString()
+
+    };
+
+    try{
+
+        const response = await fetch(SHEET_URL,{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify(data)
+
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
+    }catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+// ===============================
+// EXPORT PDF
+// ===============================
+
+async function exportPDF(){
+
+    const { jsPDF } = window.jspdf;
+
+    const zone = document.querySelector(".card");
+
+    const canvas = await html2canvas(zone,{
+        scale:2
+    });
+
+    const img = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p","mm","a4");
+
+    const largeur = 190;
+
+    const hauteur = canvas.height * largeur / canvas.width;
+
+    pdf.addImage(img,"PNG",10,10,largeur,hauteur);
+
+    const nom = document.getElementById("nom").value || "Candidat";
+
+    pdf.save(`Test_Anglais_${nom}.pdf`);
+
+}
+</script>
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxyi8YtX8uzhTdkyLqVLDBvNXwkurnzOlJc4pc4yTEVbE1_M9QYELT6hTbruJwU8a5juQ/exec";
-
-const answers = {
-  q1:'a',
-  q2:'b',
-  q3:'a',
-  q4:'a',
-  q5:'a',
-  q6:'b',
-  q7:'a'
-};
-
-function corriger(){
-  let score = 0;
-  let data = {};
-
-  // Calcul du score
-  for(let q in answers){
-    let e = document.querySelector(`input[name="${q}"]:checked`);
-    if(e){
-      data[q] = e.value;
-      if(e.value === answers[q]) score += 5;
-    }
-  }
-
-  data.q8 = document.getElementById("q8").value;
-
-  let level =
-    score < 15 ? "Level 1" :
-    score < 25 ? "Level 2" :
-    score < 35 ? "Level 3" : "Post-bac";
-
-  document.getElementById("result").innerHTML =
-    `Score : <b>${score}</b><br>Niveau : <b>${level}</b>`;
-
-  // Envoi des données vers Google Sheets
-  fetch(SHEET_URL, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      nom: document.getElementById("nom").value,
-      tel: document.getElementById("tel").value,
-      email: document.getElementById("email").value,
-      score: score,
-      level: level,
-      q1: data.q1 || "",
-      q2: data.q2 || "",
-      q3: data.q3 || "",
-      q4: data.q4 || "",
-      q5: data.q5 || "",
-      q6: data.q6 || "",
-      q7: data.q7 || "",
-      q8: data.q8 || ""
-    })
-  })
-  .then(res => res.text())
-  .then(txt => alert("Réponses enregistrées avec succès !"))
-  .catch(err => alert("Erreur lors de l'envoi : " + err));
-}
-
-// Export PDF
-async function exportPDF(){
-  const { jsPDF } = window.jspdf;
-  const zone = document.querySelector(".container");
-  const canvas = await html2canvas(zone,{scale:3});
-  const pdf = new jsPDF("p","mm","a4");
-  pdf.addImage(canvas.toDataURL("image/png"),"PNG",5,5,200,0);
-  pdf.save("test-anglais.pdf");
-}
-</script>
 
 </body>
 </html>
