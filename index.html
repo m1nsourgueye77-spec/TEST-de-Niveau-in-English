@@ -1,284 +1,803 @@
 <!doctype html>
+
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Test de positionnement – Anglais</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-body{font-family:Arial;background:#f4f6f9;font-size:18px}
-header{background:#0ea5a4;color:#fff;padding:20px}
-.container{max-width:1000px;margin:auto;padding:20px}
-.card{background:#fff;padding:20px;border-radius:10px}
-.q{margin-bottom:15px;background:#f9fafb;padding:10px;border-radius:6px}
-button{background:#0ea5a4;color:#fff;padding:12px 18px;border:0;border-radius:6px;cursor:pointer;margin-top:10px}
-textarea{width:100%;min-height:120px}
-#result{background:#e7f9f7;padding:15px;border-radius:8px;margin-top:15px}
-label{display:block;margin:6px 0}
-h2{margin-top:25px}
+<title>Test de positionnement – Anglais | Gi.Code Formation</title>
 
-  .q{
-    page-break-inside: avoid;
-    break-inside: avoid;
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 25px;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* =========================
+   CONTENEUR PRINCIPAL
+========================= */
+
+.container {
+    max-width: 1050px;
+    margin: auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.10);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.test-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 150px 1fr 150px;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #1976d2;
+}
+
+.header-photo,
+.header-logo {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #fff;
+    padding: 5px;
+    border: 3px solid #1976d2;
+    box-shadow: 0 6px 15px rgba(0,0,0,.18);
+}
+
+.header-photo {
+    justify-self: start;
+}
+
+.header-logo {
+    justify-self: end;
+    object-fit: contain;
+}
+
+.header-center {
+    text-align: center;
+}
+
+.header-center h1 {
+    margin: 5px 0;
+    color: #0d47a1;
+    font-size: 28px;
+}
+
+.header-center h2 {
+    margin: 5px 0 10px;
+    color: #1976d2;
+    font-size: 21px;
+}
+
+.header-center p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.brand {
+    color: #d49b00;
+    font-weight: 700;
+}
+
+/* =========================
+   TITRES
+========================= */
+
+.section-title {
+    background: #1976d2;
+    color: white;
+    padding: 11px 15px;
+    border-radius: 7px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #0d47a1;
+}
+
+/* =========================
+   INFORMATIONS CANDIDAT
+========================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* =========================
+   QUESTIONS
+========================= */
+
+.question {
+    margin-bottom: 22px;
+    padding: 18px;
+    border: 1px solid #ddd;
+    border-left: 5px solid #1976d2;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.question-title {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.option {
+    display: block;
+    padding: 7px 0;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    transform: scale(1.15);
+    margin-right: 8px;
+}
+
+/* =========================
+   EXPRESSION ÉCRITE
+========================= */
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+/* =========================
+   BOUTONS
+========================= */
+
+.actions {
+    text-align: center;
+    margin: 30px 0 15px;
+}
+
+.btn {
+    border: none;
+    padding: 12px 22px;
+    margin: 5px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: #1976d2;
+}
+
+.btn:hover {
+    background: #0d47a1;
+}
+
+.btn-pdf {
+    background: #d49b00;
+}
+
+.btn-pdf:hover {
+    background: #a87800;
+}
+
+/* =========================
+   RÉSULTAT
+========================= */
+
+#result {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    margin-top: 35px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 750px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .test-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .header-photo,
+    .header-logo {
+        justify-self: center;
+    }
+
+    .header-center {
+        order: 2;
+    }
+
+    .header-photo {
+        order: 1;
+    }
+
+    .header-logo {
+        order: 3;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-center h1 {
+        font-size: 23px;
+    }
+
+    .header-center h2 {
+        font-size: 18px;
+    }
+}
+
+/* =========================
+   IMPRESSION / PDF
+========================= */
+
+@media print {
+
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 100%;
+        box-shadow: none;
+        padding: 10mm;
+        border-radius: 0;
+    }
+
+    .actions {
+        display: none;
+    }
+
+    .question {
+        break-inside: avoid;
+    }
+
+    .section-title {
+        color: white !important;
+        background: #1976d2 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    input,
+    textarea {
+        border: 1px solid #999;
+    }
 }
 </style>
+
 </head>
 
 <body>
 
-<button onclick="exportPDF()">Exporter en PDF</button>
+<div class="container">
 
-<header>
-  <h1>Test de positionnement – Anglais</h1>
+```
+<!-- =========================
+     EN-TÊTE
+========================== -->
+
+<header class="test-header">
+
+    <!-- GAUCHE : PHOTO MANSSOUR -->
+    <img
+        src="images Gi. Code.jpg"
+        alt="Mansour Gueye"
+        class="header-photo"
+    >
+
+    <!-- CENTRE -->
+    <div class="header-center">
+
+        <h1>Test de positionnement – Anglais</h1>
+
+        <h2>
+            👨‍💻 Mansour Gueye –
+            <span class="brand">Gi.Code Formation</span>
+        </h2>
+
+        <p>
+            <strong>Formateur en Bureautique, Développement Web et Intelligence Artificielle</strong>
+        </p>
+
+        <p>
+            📍 Dakar, Sénégal
+        </p>
+
+        <p>
+            🎯 Évaluation du niveau d'anglais
+        </p>
+
+    </div>
+
+    <!-- DROITE : LOGO GICODE -->
+    <img
+        src="logo-gicode-officiel.jpg"
+        alt="Gi.Code Formation"
+        class="header-logo"
+    >
+
 </header>
 
-<div class="container">
-<div class="card">
 
-<form id="testForm">
+<!-- =========================
+     INFORMATIONS CANDIDAT
+========================== -->
 
-<h2>Informations du candidat</h2>
-<div class="q"><input id="nom" placeholder="Nom et prénom" required></div>
-<div class="q"><input id="tel" placeholder="Téléphone" required></div>
-<div class="q"><input id="email" placeholder="Email"></div>
+<h3 class="section-title">
+    Informations du candidat
+</h3>
 
-<h2>Questions</h2>
+<div class="info-grid">
 
-<div class="q">
-<label>1. She ___ here since 2018. (5 pts)</label>
-<label><input type="radio" name="q1" value="a"> has lived</label>
-<label><input type="radio" name="q1" value="b"> is living</label>
-<label><input type="radio" name="q1" value="c"> lives</label>
+    <div class="field">
+        <label for="nom">Nom et prénom</label>
+        <input
+            type="text"
+            id="nom"
+            placeholder="Nom et prénom"
+            required
+        >
+    </div>
+
+    <div class="field">
+        <label for="tel">Téléphone</label>
+        <input
+            type="tel"
+            id="tel"
+            placeholder="Téléphone"
+            required
+        >
+    </div>
+
+    <div class="field">
+        <label for="email">Email</label>
+        <input
+            type="email"
+            id="email"
+            placeholder="Adresse email"
+        >
+    </div>
+
 </div>
 
-<div class="q">
-<label>2. If I ___ more time, I would travel. (5 pts)</label>
-<label><input type="radio" name="q2" value="a"> have</label>
-<label><input type="radio" name="q2" value="b"> had</label>
-<label><input type="radio" name="q2" value="c"> will have</label>
+
+<!-- =========================
+     QUESTIONS
+========================== -->
+
+<h3 class="section-title">
+    Partie 1 – Grammar & Vocabulary
+</h3>
+
+
+<!-- QUESTION 1 -->
+
+<div class="question">
+
+    <div class="question-title">
+        1. She ___ here since 2018. (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q1" value="a">
+        A. has lived
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q1" value="b">
+        B. is living
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q1" value="c">
+        C. lives
+    </label>
+
 </div>
 
-<div class="q">
-<label>3. They built the bridge in 2010. Passive voice. (5 pts)</label>
-<label><input type="radio" name="q3" value="a"> The bridge was built</label>
-<label><input type="radio" name="q3" value="b"> The bridge is built</label>
-<label><input type="radio" name="q3" value="c"> The bridge has built</label>
+
+<!-- QUESTION 2 -->
+
+<div class="question">
+
+    <div class="question-title">
+        2. If I ___ more time, I would travel. (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q2" value="a">
+        A. have
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q2" value="b">
+        B. had
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q2" value="c">
+        C. will have
+    </label>
+
 </div>
 
-<div class="q">
-<label>4. "Give up" means: (5 pts)</label>
-<label><input type="radio" name="q4" value="a"> abandon</label>
-<label><input type="radio" name="q4" value="b"> continue</label>
-<label><input type="radio" name="q4" value="c"> start</label>
+
+<!-- QUESTION 3 -->
+
+<div class="question">
+
+    <div class="question-title">
+        3. They built the bridge in 2010. Choose the passive voice. (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q3" value="a">
+        A. The bridge was built.
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q3" value="b">
+        B. The bridge is built.
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q3" value="c">
+        C. The bridge has built.
+    </label>
+
 </div>
 
-<div class="q">
-<label>5. Correct expression: (5 pts)</label>
-<label><input type="radio" name="q5" value="a"> make a decision</label>
-<label><input type="radio" name="q5" value="b"> do a decision</label>
-<label><input type="radio" name="q5" value="c"> take a decide</label>
+
+<!-- QUESTION 4 -->
+
+<div class="question">
+
+    <div class="question-title">
+        4. What does "give up" mean? (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q4" value="a">
+        A. abandon
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q4" value="b">
+        B. continue
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q4" value="c">
+        C. start
+    </label>
+
 </div>
 
-<div class="q">
-<label>6. Why do you learn English? (5 pts)</label>
-<label><input type="radio" name="q6" value="a"> Exams</label>
-<label><input type="radio" name="q6" value="b"> Career & communication</label>
-<label><input type="radio" name="q6" value="c"> Travel</label>
+
+<!-- QUESTION 5 -->
+
+<div class="question">
+
+    <div class="question-title">
+        5. Choose the correct expression. (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q5" value="a">
+        A. make a decision
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q5" value="b">
+        B. do a decision
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q5" value="c">
+        C. take a decide
+    </label>
+
 </div>
 
-<div class="q">
-<label>7. Mum takes ___ her baby. (5 pts)</label>
-<label><input type="radio" name="q7" value="a"> care</label>
-<label><input type="radio" name="q7" value="b"> out</label>
-<label><input type="radio" name="q7" value="c"> up</label>
+
+<!-- QUESTION 6 -->
+
+<div class="question">
+
+    <div class="question-title">
+        6. Why do you learn English? (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q6" value="a">
+        A. Exams
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q6" value="b">
+        B. Career & communication
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q6" value="c">
+        C. Travel
+    </label>
+
 </div>
 
-<div class="q">
-<h2>Expression écrite (5 pts)</h2>
-<p>Write 5–6 lines: <strong>Why is learning English important for your future?</strong></p>
-<textarea id="q8"></textarea>
+
+<!-- QUESTION 7 -->
+
+<div class="question">
+
+    <div class="question-title">
+        7. Mum takes ___ her baby. (5 pts)
+    </div>
+
+    <label class="option">
+        <input type="radio" name="q7" value="a">
+        A. care
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q7" value="b">
+        B. out
+    </label>
+
+    <label class="option">
+        <input type="radio" name="q7" value="c">
+        C. up
+    </label>
+
 </div>
 
-<button type="button" onclick="corriger()">Valider</button>
+
+<!-- =========================
+     EXPRESSION ÉCRITE
+========================== -->
+
+<h3 class="section-title">
+    Partie 2 – Expression écrite
+</h3>
+
+<div class="question">
+
+    <div class="question-title">
+        8. Write 5–6 lines in English. (5 pts)
+    </div>
+
+    <p>
+        <strong>
+            Why is learning English important for your future?
+        </strong>
+    </p>
+
+    <textarea
+        id="q8"
+        placeholder="Write your answer here..."
+    ></textarea>
+
+</div>
+
+
+<!-- =========================
+     ACTIONS
+========================== -->
+
+<div class="actions">
+
+    <button
+        type="button"
+        class="btn"
+        onclick="corriger()"
+    >
+        ✅ Valider le test
+    </button>
+
+    <button
+        type="button"
+        class="btn btn-pdf"
+        onclick="exportPDF()"
+    >
+        📄 Imprimer / Exporter en PDF
+    </button>
+
+</div>
+
+
+<!-- RÉSULTAT -->
+
 <div id="result"></div>
 
-</form>
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<div class="footer">
+
+    <strong>Gi.Code Formation</strong><br>
+
+    Compétences • Digitales • Innovation • Impact<br>
+
+    « Apprendre, concevoir et innover ensemble. »
+
 </div>
+```
+
 </div>
 
 <script>
-// ===============================
-// CONFIGURATION
-// ===============================
 
-// Remplace par l'URL de ton Apps Script
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwoBBJpn1O4eA-bA6Uo8Bctw4pumommRnZorUeaa_7OWAAkbks5vmCfNglWN3IkciLi/exec";
+function corriger() {
 
-// Réponses correctes
-const answers = {
-    q1: "a",
-    q2: "b",
-    q3: "a",
-    q4: "a",
-    q5: "a",
-    q6: "b",
-    q7: "a"
-};
-
-// ===============================
-// CORRECTION
-// ===============================
-
-async function corriger() {
-
-    let score = 0;
-
-    Object.keys(answers).forEach(q => {
-        const rep = document.querySelector(`input[name="${q}"]:checked`);
-
-        if(rep && rep.value === answers[q]){
-            score += 5;
-        }
-    });
-
-    const redaction = document.getElementById("q8").value.trim();
-
-    if(redaction.length >= 120){
-        score += 5;
-    }
-
-    let niveau = "";
-    let recommandation = "";
-
-    if(score <= 15){
-
-        niveau = "Débutant (A1)";
-
-        recommandation =
-        "Vous devez commencer par les bases : alphabet, verbes be/have, présent simple, vocabulaire essentiel.";
-
-    }else if(score <= 25){
-
-        niveau = "Élémentaire (A2)";
-
-        recommandation =
-        "Vous connaissez les bases mais devez renforcer la grammaire et la compréhension orale.";
-
-    }else if(score <= 35){
-
-        niveau = "Intermédiaire (B1)";
-
-        recommandation =
-        "Vous pouvez communiquer dans les situations courantes. Travaillez les temps avancés et le vocabulaire.";
-
-    }else{
-
-        niveau = "Avancé (B2+)";
-
-        recommandation =
-        "Très bon niveau. Concentrez-vous sur la fluidité, les expressions idiomatiques et la rédaction.";
-
-    }
-
-    document.getElementById("result").innerHTML = `
-        <h2>Résultat</h2>
-
-        <p><b>Score :</b> ${score}/40</p>
-
-        <p><b>Niveau :</b> ${niveau}</p>
-
-        <p><b>Recommandation :</b><br>${recommandation}</p>
-    `;
-
-    // Enregistrer dans Google Sheets
-    enregistrer(score,niveau,recommandation);
-}
-
-// ===============================
-// ENVOI GOOGLE SHEETS
-// ===============================
-
-async function enregistrer(score,niveau,recommandation){
-
-    const data = {
-
-        nom:document.getElementById("nom").value,
-
-        telephone:document.getElementById("tel").value,
-
-        email:document.getElementById("email").value,
-
-        score:score,
-
-        niveau:niveau,
-
-        recommandation:recommandation,
-
-        redaction:document.getElementById("q8").value,
-
-        date:new Date().toLocaleString()
-
+    const answers = {
+        q1: "a",
+        q2: "b",
+        q3: "a",
+        q4: "a",
+        q5: "a",
+        q6: "b",
+        q7: "a"
     };
 
-    try{
+    let score = 0;
+    let total = 35;
 
-        await fetch(SHEET_URL,{
-    method:"POST",
-    mode:"no-cors",
-    headers:{
-        "Content-Type":"application/json"
-    },
-    body:JSON.stringify(data)
-});
+    for (let question in answers) {
 
-        alert("Résultat enregistré avec succès.");
+        const selected = document.querySelector(
+            `input[name="${question}"]:checked`
+        );
 
-        console.log(result);
-
-    }catch(err){
-
-        console.log(err);
-
+        if (selected && selected.value === answers[question]) {
+            score += 5;
+        }
     }
 
-}
+    const expression = document
+        .getElementById("q8")
+        .value
+        .trim();
 
-// ===============================
-// EXPORT PDF
-// ===============================
+    let result = `
+        <h3>Résultat du test</h3>
 
-async function exportPDF(){
+        <p>
+            <strong>Score QCM :</strong>
+            ${score} / 35
+        </p>
 
-    const { jsPDF } = window.jspdf;
+        <p>
+            <strong>Expression écrite :</strong>
+            à évaluer par le formateur
+        </p>
+    `;
 
-    const zone = document.querySelector(".card");
+    if (score >= 30) {
 
-    const canvas = await html2canvas(zone,{
-        scale:2
+        result += `
+            <p>
+                🟢 <strong>Niveau indicatif : Avancé</strong>
+            </p>
+        `;
+
+    } else if (score >= 20) {
+
+        result += `
+            <p>
+                🟡 <strong>Niveau indicatif : Intermédiaire</strong>
+            </p>
+        `;
+
+    } else {
+
+        result += `
+            <p>
+                🔵 <strong>Niveau indicatif : Débutant / Élémentaire</strong>
+            </p>
+        `;
+    }
+
+    if (!expression) {
+
+        result += `
+            <p style="color:#c62828;">
+                ⚠️ L'expression écrite n'a pas encore été renseignée.
+            </p>
+        `;
+
+    } else {
+
+        result += `
+            <p>
+                ✍️ Expression écrite : réponse enregistrée.
+            </p>
+        `;
+    }
+
+    document.getElementById("result").innerHTML = result;
+
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
     });
+}
 
-    const img = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF("p","mm","a4");
+function exportPDF() {
 
-    const largeur = 190;
-
-    const hauteur = canvas.height * largeur / canvas.width;
-
-    pdf.addImage(img,"PNG",10,10,largeur,hauteur);
-
-    const nom = document.getElementById("nom").value || "Candidat";
-
-    pdf.save(`Test_Anglais_${nom}.pdf`);
+    window.print();
 
 }
+
 </script>
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 
 </body>
 </html>
